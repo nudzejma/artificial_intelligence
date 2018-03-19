@@ -25,7 +25,7 @@ class Graph:
 
         '''
 
-        self.transition_matrix[vertex_from][vertex_to] = edge_weight
+        self.transition_matrix[vertex_from][vertex_to] = self.transition_matrix[vertex_to][vertex_from] = edge_weight
 
     def set_position_of_vertex(self, vertex: int, x: int, y: int) -> None:
         '''
@@ -159,12 +159,13 @@ class Graph:
             index_of_smallest = self.get_smallest_comparing_f(start_vertex, goal_vertex, list_of_frontiers)
 
             pom = list_of_frontiers[0]
-            list_of_frontiers[0] = index_of_smallest
+            list_of_frontiers[0] = list_of_frontiers[index_of_smallest]
             list_of_frontiers[index_of_smallest] = pom
 
             sv = list_of_frontiers.popleft()
             print('Visiting', sv)
-
+            if sv == goal_vertex:
+                return
             for i, frontier_weight in enumerate(self.transition_matrix[sv]):
 
                 if frontier_weight != -1 and not self.visited[i]:
@@ -173,6 +174,7 @@ class Graph:
                     list_of_frontiers.append(i)
 
 
+# example 1
 g = Graph(6)
 g.set_position_of_vertex(0, 0, 0)
 g.set_position_of_vertex(1, 1, 1)
@@ -192,4 +194,3 @@ print('BFS from 0:')
 g.bfs(0)
 print('A* from 1 to 3:')
 g.a_star(1, 3)
-
