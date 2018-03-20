@@ -116,23 +116,21 @@ class Graph:
 
         '''
 
-        # if len(list_of_frontiers) == 1:
-        #     return 0
+        if len(list_of_frontiers) == 1:
+            return 0
 
         curr_smallest = 10000
         curr_smallest_index = 0
         for i, frontier in enumerate(list(list_of_frontiers)):
 
-            try:
+                try:
+                    f = self.calculate_f(start_vertex, frontier, goal_vertex)
+                    if f < curr_smallest:
+                        curr_smallest = f
+                        curr_smallest_index = i
 
-                f = self.calculate_f(start_vertex, frontier, goal_vertex)
-                if f < curr_smallest:
-
-                    curr_smallest = f
-                    curr_smallest_index = i
-
-            except ValueError:
-                continue
+                except ValueError:
+                    continue
 
         return curr_smallest_index
 
@@ -163,6 +161,7 @@ class Graph:
             list_of_frontiers[index_of_smallest] = pom
 
             sv = list_of_frontiers.popleft()
+            start_vertex = sv
             print('Visiting', sv)
             if sv == goal_vertex:
                 return
@@ -175,22 +174,49 @@ class Graph:
 
 
 # example 1
-g = Graph(6)
-g.set_position_of_vertex(0, 0, 0)
-g.set_position_of_vertex(1, 1, 1)
-g.set_position_of_vertex(2, 3, 0)
-g.set_position_of_vertex(3, 0, 5)
-g.set_position_of_vertex(4, 3, 0)
-g.set_position_of_vertex(5, -1, -2)
+# g = Graph(6)
+# g.set_position_of_vertex(0, 0, 0)
+# g.set_position_of_vertex(1, 1, 1)
+# g.set_position_of_vertex(2, 3, 0)
+# g.set_position_of_vertex(3, 0, 5)
+# g.set_position_of_vertex(4, 3, 1)
+# g.set_position_of_vertex(5, -1, -2)
+#
+# g.add_edge(0, 5, 10)
+# g.add_edge(0, 4, 10)
+# g.add_edge(1, 2, 10)
+# g.add_edge(2, 0, 10)
+# g.add_edge(2, 3, 10)
+# g.add_edge(3, 1, 10)
+# print('BFS from 0:')
+# g.bfs(0)
+# print('A* from 1 to 3:')
+# g.a_star(5, 1)
 
-g.add_edge(0, 5, 10)
-g.add_edge(0, 2, 10)
-g.add_edge(0, 4, 10)
-g.add_edge(1, 2, 10)
-g.add_edge(2, 0, 10)
-g.add_edge(2, 3, 10)
-g.add_edge(3, 1, 10)
-print('BFS from 0:')
-g.bfs(0)
-print('A* from 1 to 3:')
-g.a_star(1, 3)
+# example 2
+g = Graph(10)
+g.set_position_of_vertex(0, 0, 0)
+g.set_position_of_vertex(1, -3, -3)
+g.set_position_of_vertex(2, -2, -5)
+g.set_position_of_vertex(3, 2, -4)
+g.set_position_of_vertex(4, 1, -6)
+g.set_position_of_vertex(5, 7, 0)
+g.set_position_of_vertex(6, 6, -3)
+g.set_position_of_vertex(7, 8, -4)
+g.set_position_of_vertex(8, 7, -5)
+g.set_position_of_vertex(9, 5, -7)
+
+g.add_edge(0, 1, 6)
+g.add_edge(0, 5, 3)
+g.add_edge(1, 2, 3)
+g.add_edge(2, 3, 1)
+g.add_edge(2, 4, 5)
+g.add_edge(3, 4, 8)
+g.add_edge(4, 8, 5)
+g.add_edge(4, 9, 5)
+g.add_edge(5, 6, 1)
+g.add_edge(5, 7, 7)
+g.add_edge(6, 8, 3)
+g.add_edge(7, 8, 2)
+g.add_edge(8, 9, 3)
+g.a_star(0, 9)
